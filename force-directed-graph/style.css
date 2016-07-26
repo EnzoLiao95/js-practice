@@ -1,12 +1,68 @@
-header {
-  color: #999;
+header.banner {
   min-width: 100%;
-  top: 0;
-  left: 0;
-  padding: 1.5em 0;
+  display: block;
+  position: relative;
+  padding: 0 0;
   border-top: 0;
   width: auto;
+  height: auto;
   background: #3366ff;
+  border-bottom: solid 1px #1144dd;
+  box-shadow: 0px 2px 1px #888888;
+  vertical-align: baseline;
+  overflow: hidden;
+}
+
+.enzo-logo {
+  float: left;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+  border-left: 0;
+  border-right: solid 1.2px #1144dd;
+  display: inline-block;
+}
+
+.enzo-logo-alt {
+  postion: relative;
+  float: left;
+  margin-left: 0;
+}
+
+.nav-primary {
+  position: relative;
+  float: left;
+  width: auto;
+  height: auto;
+  display: inline-block;
+  margin: 0 auto;
+  padding: 0 0;
+  border-right: solid 1.2px #5588ff;
+}
+
+.nav-primary ul {
+  float: left;
+  margin: 0 auto;
+  padding: 0 0;
+  position: relative;
+  background-color: transparent;
+  border: 0;
+  min-height: 54px;
+  vertical-align: baseline;
+  list-style-type: none;
+}
+
+.nav-primary ul li {
+  line-height: 54px;
+  text-align: center;
+  border-right: solid 1.2px #1144dd;
+  border-left: solid 1.2px #5588ff;
+  display: inline-block;
+  min-height: 54px;
+  margin: 0 auto;
+  padding: 0 10px;
+  float: left;
+  list-style-image: none;
   color: #ffffff;
 }
 
@@ -15,24 +71,6 @@ body {
   margin: 0 auto 4em auto;
   tab-size: 2;
   background: #f1f1f1;
-}
-
-.enzo-logo {
-  border-left: 0;
-  margin-top: 0;
-  float: left;
-  height: 80px;
-  background-color: #ffffff;
-  overflow: hidden;
-}
-
-.enzo-logo-alt {
-  background-image: url(./img/enzo-logo-white.png);
-  background-size: 128px 48px;
-  width: 128px;
-  height: 48px;
-  float: left;
-  margin-left: 10px;
 }
 
 .column {
@@ -58,7 +96,9 @@ h1 {
 }
 
 h2 {
-  margin-top: 2em;
+  margin-top: 1em;
+  font-size: 32px;
+  font-weight: 500;
 }
 
 h1, h2 {
