@@ -19,7 +19,6 @@ header.banner {
   height: auto;
   overflow: hidden;
   border-left: 0;
-  border-right: solid 1.2px #1144dd;
   display: inline-block;
 }
 
@@ -37,7 +36,6 @@ header.banner {
   display: inline-block;
   margin: 0 auto;
   padding: 0 0;
-  border-right: solid 1.2px #5588ff;
 }
 
 .nav-primary ul {
@@ -55,8 +53,6 @@ header.banner {
 .nav-primary ul li {
   line-height: 54px;
   text-align: center;
-  border-right: solid 1.2px #1144dd;
-  border-left: solid 1.2px #5588ff;
   display: inline-block;
   min-height: 54px;
   margin: 0 auto;
