@@ -4,32 +4,43 @@
 <title>Stream Graph</title>
 <link href = "../css/style.css" rel = "stylesheet" type = "text/css" />
 
-<header>
-  <div class="column">
-    <a class="user" href="https://github.com/EnzoLiao95">
-      <img class="avatar" src="https://avatars0.githubusercontent.com/u/19594961?v=3&s=460" width="30" height="30">Enzo
-    </a>’s coding Practice
-  <div class="date">August 1, 2016</div>
-  </div>
-</header>
+<body>
+    <div class = "banner">
+        <ul><div class = "enzo-logo">
+            <a href = "https://github.com/EnzoLiao95">
+                <img width = 160px height = 40px src = "../img/enzo-logo-white.svg">
+            </a></div>
+            <li class = "drop">View
+                <div class = "drop-down-container">
+                    <div class = "drop-out"><ul>
+                        <li><a href = "../force-directed-graph/force-directed-graph.html">force-directed graph</a></li>
+                        <li style = "color: #555555">stream graph</li>
+                        <li style = "color: #555555">word cloud</li>
+                        <li style = "color: #555555">scatter plot</li>
+                    </ul></div>
+                </div>
+            </li>
+            <li class = "drop"><a href = "https://github.com/EnzoLiao95/js-practice/tree/master/stream-graph">GitHub</a></li>
+        </ul>
+    </div>
 
-<div class="column">
-  <h2>Stream Graph</h2>
-  <div class="index" id = "canvas-container" style="cursor:default">
-    <svg id="layout"></svg>
-  </div>
-  <h2>Info</h2>
-  <div class="textcolumn" style = "float: left; max-width: 520px;">
-  <p>
-    Here is my first JavaScript coding practice's demo. Honestly, it is really difficult for me to do such a thing 
-    without using d3 because I've never participated in any JS project like that. Besides, considering how to draw 
-    a graph as beautifully as Mike Bostock did can really cause a headache.
-  </p>
-  </div>
+    <div class = "column">
+        <h2>Stream Graph</h2>
+        <div class = "index" style = "cursor:default">
+            <svg id = "layout"></svg>
+        </div>
+        <h2>Info</h2>
+        <div class = "textcolumn" style = "float: left; max-width: 500px;">
+            <p>
+                Here is my Second JavaScript coding practice's demo. I am supposed  to show a stream graph without using d3. Links to
+                other pages is created in the navigation.
+            </p>
+        </div> 
+        <div class = "textcolumn" style = "float: right; max-width: 420px;">
+        <p></p>
+    </div>
   
-  <div class="textcolumn" style = "float: right; max-width: 400px;">
-  </div>
-
-</script>
-<script src="layer-data.json"></script>
-<script text="type/script" src="st-graph.js"></script>
+    <script src = "layer-data.json"></script>
+    <script text = "type/script" src = "st-graph.js"></script>
+    </div>
+</body>
