@@ -1,148 +1,187 @@
-header.banner {
-  min-width: 100%;
-  display: block;
-  position: relative;
-  padding: 0 0;
-  border-top: 0;
-  width: auto;
-  height: auto;
-  background: #3366ff;
-  border-bottom: solid 1px #1144dd;
-  box-shadow: 0px 1px 1px #888888;
-  vertical-align: baseline;
-  overflow: hidden;
+/* #####                                                   ##### */
+/* ##### Attention: This is the basic .css file !          ##### */
+/* ##### Sub-pages' .css files will be updated in the same ##### */
+/* ##### folder if they are needed.                        ##### */
+/* #####                                                   ##### */
+
+body {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    margin: 0 auto 4em auto;
+    tab-size: 2;
+    background: #f1f1f1;
+}
+
+.banner {
+    width: 100%;
+    padding: 0;
+    background: #2b2b2b;
+    box-shadow: 0px 1px 1px #888888;
+    vertical-align: baseline;
+    overflow: hidden;
 }
 
 .enzo-logo {
-  float: left;
-  width: auto;
-  height: auto;
-  overflow: hidden;
-  border-left: 0;
-  /* border-right: solid 1.2px #1144dd; */
-  display: inline-block;
-  padding: 10px 10px;
+    postion: relative;
+    float: left;
+    overflow: hidden;
+    display: inline-block;
+    padding: 10px 0;
 }
 
-.enzo-logo-alt {
-  postion: relative;
-  float: left;
-  margin-left: 0;
+a {
+    text-decoration: none;
 }
 
-.nav-primary {
-  position: relative;
-  float: left;
-  width: auto;
-  height: auto;
-  display: inline-block;
-  margin: 0 auto;
-  padding: 0 0;
-  /* border-right: solid 1.2px #5588ff; */
+/* ##################### navigation ################### */
+
+ul {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    vertical-align: baseline;
+    list-style: none;
+    overflow: hidden;
 }
 
-.nav-primary ul {
-  float: left;
-  margin: 0 auto;
-  padding: 0 0;
-  position: relative;
-  background-color: transparent;
-  border: 0;
-  min-height: 54px;
-  vertical-align: baseline;
-  list-style-type: none;
+ul li {
+    cursor: pointer;
+    text-align: center;
+    float: left;
+    line-height: 64px;
+    padding: 0 20px;
+    height: 64px;
+    color: #eeeeee;
+    -webkit-transition: padding .05s linear;
+    -moz-transition: padding .05s linear;
+    -ms-transition: padding .05s linear;
+    -o-transition: padding .05s linear;
+    transition: padding .05s linear;
 }
 
-.nav-primary ul li {
-  line-height: 54px;
-  text-align: center;
-  /* border-right: solid 1.2px #1144dd;
-     border-left: solid 1.2px #5588ff; */
-  display: inline-block;
-  min-height: 54px;
-  margin: 0 auto;
-  padding: 0 10px;
-  float: left;
-  list-style-image: none;
-  color: #ffffff;
+ul li.drop {
+    display: block;
 }
 
-body {
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
-  margin: 0 auto 4em auto;
-  tab-size: 2;
-  background: #f1f1f1;
+ul > li {
+    display: inline-block;
 }
+
+ul li a:hover {
+    color: #ffffff;
+}
+
+.drop-down-container {
+    display: block;
+    top: -1000px;
+    width: 160px;
+    margin: 0px -20px;
+    position: absolute;
+    z-index: 10;
+}
+
+.drop-out {
+    min-width: 100px;
+    background-color: #2b2b2b;
+    float: left;
+    position: relative;
+    opacity: 0;
+    -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.5);
+    -webkit-transition: all .1s ease-out;
+    -moz-transition: all .1s ease-out;
+    -ms-transition: all .1s ease-out;
+    -o-transition: all .1s ease-out;
+    transition: all .1s ease-out;
+}
+
+.drop-out ul {
+    float: left;
+}
+
+.drop-out ul li {
+    width: 160px;
+    position: relative;
+    text-align: left;
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    padding: 10px 10px;
+    color: #eeeeee;
+    -webkit-transition: background .1s ease-out;
+    -moz-transition: background .1s ease-out;
+    -ms-transition: background .1s ease-out;
+    -o-transition: background .1s ease-out;
+    transition: background .1s ease-out;
+}
+
+.drop-out ul li:hover {
+    background: #cd5555;
+    color: #eeeeee;
+}
+
+ul li:hover a {
+    color: #eeeeee;
+}
+
+ul li:hover  { background-color: #cd5555; }
+ul li:hover .drop-down-container { top: 56px; }
+ul li:hover .underline { border-bottom-color: #eeeeee; }
+ul li:hover .drop-out { opacity: 1; margin-top: 8px; }
+
+/* ######################## column ###################### */
 
 .column {
-  max-width: 960px;
-  position: relative;
-  display: block;
-  margin: 0 auto;
-  padding: 0 10px;
+    max-width: 960px;
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
 .textcolumn {
-  position: relative;
-  display: block;
-  margin: 0 auto;
-  padding: 0 10px;
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
 h1 {
-  font-size: 46px;
-  font-weight: 500;
-  letter-spacing: -1px;
-  margin: 0.1em 0;
+    font-size: 46px;
+    font-weight: 500;
+    letter-spacing: -1px;
+    margin: 0.1em 0;
 }
 
 h2 {
-  margin-top: 1em;
-  font-size: 32px;
-  font-weight: 500;
+    margin-top: 1em;
+    font-size: 32px;
+    font-weight: 500;
 }
 
 h1, h2 {
-  text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
 }
 
 p {
-  line-height: 22px;
-}
-
-.avatar {
-  position: absolute;
-  top: 0;
-  right: 100%;
-  border-radius: 4px;
-}
-
-li {
-  max-width: 680px;
+    line-height: 22px;
 }
 
 a:link {
-  color: #f1f1f1;
-  fill: #f1f1f1;
+    color: #f1f1f1;
+    fill: #f1f1f1;
 }
 
 a:visited {
-  color: #d1d1d1;
-  fill: #d1d1d1;
-}
-
-textarea {
-  font-size: 100%;
-}
-
-.date {
-  font-size: 11px;
+    color: #d1d1d1;
+    fill: #d1d1d1;
 }
 
 #canvas-container {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #f1f1f1;
-  border-radius: 10px;
-  background: #ffffff;
+    border-radius: 0;
+    background: #ffffff;
 }
