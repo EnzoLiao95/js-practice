@@ -1,0 +1,7 @@
+#canvas-container {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #f1f1f1;
+    border-radius: 10px;
+    background: #ffffff;
+}
