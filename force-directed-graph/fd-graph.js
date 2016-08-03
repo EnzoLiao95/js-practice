@@ -13,7 +13,7 @@ var ctx = canvas.getContext("2d"),          // 2-d canvas                       
     graph_links = [],                       // determine whether a node is being linking   **
     group_color = [],                       // color of each node gruop                    **
     group_num = 0,                          // total number of node groups                 **
-    max_value = 0,                          // biggest value of links between nodes        **
+	max_value = 0,                          // biggest value of links between nodes        **
     radius = 4,                             // the radius of nodes                         **
     nodeclick = -1,                         // determine whether a node is being clicked   **
     interval = 1,                           // the interval time in fuction setInterval()  **
@@ -22,7 +22,8 @@ var ctx = canvas.getContext("2d"),          // 2-d canvas                       
     color = "#",                            // color variable                              **
     K = 200,                                // a constant in force model                   **
     C = 2,                                  // a constant in force model                   **
-    force = new Array(nodes.length);        // force array of all nodes                    **
+	force = new Array(nodes.length),        // force array of all nodes                    **
+    barycenter = { x : 0, y : 0};           // the barycenter position of all nodes        **
 /*******************************************************************************************/
 
 for (var i = 0; i < nodes.length; i++)
@@ -47,7 +48,7 @@ for (var i = 0; i < nodes.length; i++) {
 } // random color for each group
 
 function init_layout(){
-    for(var i = 0; i < nodes.length; i++) {
+    for (var i = 0; i < nodes.length; i++) {
         nodes[i].x = (2 * Math.random() - 1) * canvas.width * 0.2 + canvas.width * 0.5;
         nodes[i].y = (2 * Math.random() - 1) * canvas.height * 0.2 + canvas.height * 0.5;
         // initiation of coordinates
@@ -57,21 +58,21 @@ function init_layout(){
         // nodes in one group share the same color        
     }
 
-    for(var i = 0; i < nodes.length; i++) {
+    for (var i = 0; i < nodes.length; i++) {
         graph_links[i] = new Array(nodes.length);
         for(var j = 0; j < nodes.length; j++)
             graph_links[i][j] = false;
         // edges initiation
     }
 
-    for(var i = 0; i < links.length; i++) {
+    for (var i = 0; i < links.length; i++) {
         graph_links[map[links[i].source]][map[links[i].target]] = true;
         graph_links[map[links[i].target]][map[links[i].source]] = true;
     } // edges layout
 }
 
 function draw_layout() {
-    for(var i = 0; i < links.length; i++){
+    for (var i = 0; i < links.length; i++){
         ctx.strokeStyle = "rgba(180, 180, 180, 0.75)";
         // color of lines
 
@@ -88,7 +89,7 @@ function draw_layout() {
         ctx.closePath();
     }
 
-    for(var i = 0; i < nodes.length; i++){
+    for (var i = 0; i < nodes.length; i++){
         ctx.beginPath();
         ctx.arc(nodes[i].x, nodes[i].y, radius * 1.4, 0, 2 * Math.PI, false);
         ctx.arc(nodes[i].x, nodes[i].y, radius * 1.0, 2 * Math.PI, 0, false);
@@ -186,7 +187,7 @@ function mouse_pos() {
 function activate_click()
 { // this function choose which node is being clicked
     var mpos = mouse_pos();
-    for(var i = 0; i < nodes.length; i++)
+    for (var i = 0; i < nodes.length; i++)
         if(dist(nodes[i], mpos) <= 3 * radius)
 		{ // at most one node can be clicked one time
             nodes[i].press = true;
@@ -198,7 +199,7 @@ function activate_click()
 function move_node()
 { // this function move the chosen node to new position
     var mpos = mouse_pos();
-    if(nodeclick == -1) return;
+    if (nodeclick == -1) return;
 	// no node is chosen
 	
     nodes[nodeclick].x = mpos.x;
@@ -212,7 +213,7 @@ function move_node()
 
 function deactivate_click()
 { // this function disarms activate status
-    if(nodeclick == -1) return;
+    if (nodeclick == -1) return;
 	// no node is chosen
 	
     nodes[nodeclick].press = false;
@@ -222,12 +223,21 @@ function deactivate_click()
 function update_layout() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 	// first clear rectangle area to update
-	
-    for(var i = 0; i < nodes.length; i++) force[i] = vector.create();
-	// initiate forces between the node being clicked and other arbitrary node
+    
+    for (var i = 0; i < nodes.length; i++)
+    { // calculate the barycenter position
+        barycenter.x += nodes[i].x;
+        barycenter.y += nodes[i].y;
+    }
 
-    for(var i = 0; i < nodes.length; i++)
+    barycenter.x /= nodes.length;
+    barycenter.y /= nodes.length;
+    gravity = vector.create(480 - barycenter.x, 306 - barycenter.y)
+        .sca_multi(1.6);
+
+    for (var i = 0; i < nodes.length; i++)
 	{ // calculate the force of each node at current status
+        force[i] = vector.create();
         for(var j = 0; j < i; j++) {
             var subforce = attr_force(nodes[i], nodes[j]).sca_multi(Number(graph_links[i][j]))
 			             . plus(repu_force(nodes[i], nodes[j]));
@@ -237,11 +247,11 @@ function update_layout() {
         }
     }
 
-    for(var i = 0; i < nodes.length; i++)
+    for (var i = 0; i < nodes.length; i++)
 	{ // update coordinates of all nodes
-        if(nodes[i].press == false){
-            nodes[i].x += C * force[i].x;
-            nodes[i].y += C * force[i].y;
+        if(nodes[i].press == false) {
+            nodes[i].x += C * force[i].x + gravity.x;
+            nodes[i].y += C * force[i].y + gravity.y;
         }
     }
 	
