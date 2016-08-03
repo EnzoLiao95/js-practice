@@ -164,7 +164,29 @@ function scale(data) {
     }
 }
 
-var layer = layer_stack(streamlayer);
+/* Inspired by Lee Byron's test data generator. */
+function bump_layer(n) {
+    function bump(a) {
+        var x = 1 / (.1 + Math.random()),
+            y = 2 * Math.random() - .5,
+            z = 10 / (.1 + Math.random());
+        for (var i = 0; i < n; i++) {
+            var w = (i / n - y) * z;
+            a[i] += x * Math.exp(-w * w);
+        }
+    }
+
+    var a = [], i;
+    for (var i = 0; i < n; ++i) a[i] = 0;
+    for (var i = 0; i < 5; ++i) bump(a);
+    return a.map(function(d, i) { return { x: i, y : Math.max(0, d)}; });
+}
+
+var n = 20, // number of layers
+    m = 200, // number of samples per layer
+    stream_data = [];
+for (var i = 0; i < 20; i++) stream_data.push(i);
+var layer = layer_stack(stream_data.map(function() { return bump_layer(200); }));
 scale(layer);
 
 var color_idx = [];
@@ -187,13 +209,13 @@ window.onload = function() {
             str += "L" + layer[i][j].x + "," + layer[i][j].y;
         // get path string
 
-        var r = Math.floor(color_idx[i] / layer.length * 100) + 119;
-        var g = Math.floor(color_idx[i] / layer.length * 100) + 136;
-        var b = Math.floor(color_idx[i] / layer.length * 100) + 153;
+        var r = Math.floor(Math.pow(color_idx[i] / layer.length, 0.8) * 72) + 88;
+        var g = Math.floor(Math.pow(color_idx[i] / layer.length, 0.8) * 72) + 88;
+        var b = Math.floor(Math.pow(color_idx[i] / layer.length, 0.8) * 100) + 105;
         // get layer colors
 
         path.setAttribute("fill", "rgb(" + r + "," + g + "," + b + ")");
-        path.setAttribute("stroke", "rgb(" + 120 + "," + 135 + "," + 153 + ")");
+        path.setAttribute("stroke", "rgb(" + 88 + "," + 88 + "," + 105 + ")");
         path.setAttribute("stroke-width", "0.1px");
         path.setAttribute("d", str);
         svg.appendChild(path);
