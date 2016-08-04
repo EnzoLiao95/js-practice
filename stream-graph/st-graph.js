@@ -272,7 +272,7 @@ function transition() {
     // clear the original animation if well-defined
 
     cur_layer = (cur_layer + 1) % 3;
-    newlayer = layer_copy_2d(stream_layer[(cur_layer + 1) % 3]);
+    newlayer = layer_copy_2d(stream_layer[cur_layer]);
     interval_id = setInterval(update, 1);
 
     function update() {
