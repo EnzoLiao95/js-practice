@@ -8,11 +8,11 @@ Array.prototype.shuffle = function(end = this.length)
 	if (end > this.length) end = this.length;
 	var shuffle_arr = [];
 	for(var iter = 0; iter < end; iter++) {
-		var randomIndex = parseInt(Math.random() * iter);
+		var random_index = parseInt(Math.random() * iter);
 		// generate som random numbers in area allowed
 
-		var temp = this[randomIndex];
-		this[randomIndex] = this[iter];
+		var temp = this[random_index];
+		this[random_index] = this[iter];
 		this[iter] = temp;
 		// exchange different elements in original array
 		shuffle_arr.push(this[iter]);
@@ -41,6 +41,18 @@ Array.prototype.colsum = function(idx, end = this.length)
 		sum += this[iter][idx];
 	}
 	return sum;
+};
+
+Array.prototype.copy_2d = function()
+{ // this function only fit 2d-array
+    var arr = new Array(this.length);
+    for (var iter = 0; iter < this.length; iter++) {
+        if (Object.prototype.toString.call(this[iter]) != Object.prototype.toString.call([])) return;
+        // exit function if any element in arr is not an array
+
+        arr[iter] = this[iter].concat();
+    }
+    return arr;
 };
 
 Array.prototype.plus = function(arr)
@@ -89,11 +101,11 @@ Array.prototype.inner_product = function(arr)
 function layer_stack(data){
     var layer_line = [], diff = [];
     layer_line.push([]);
-    for(var i = 0; i < data[0].length; i++)
+    for (var i = 0; i < data[0].length; i++)
         layer_line[0].push({ x : data[0][i].x, y : data[0][i].y });
     // initiate baseline
 
-    for(var i = 0; i < data.length; i++)
+    for (var i = 0; i < data.length; i++)
     { // initiate differences between two neighbor lines
         diff.push([]);
         diff[i].push(0);
@@ -130,7 +142,7 @@ function layer_stack(data){
     for (var i = 1; i < data.length; i++)
     { // in this circulation we complete array layer_line
         layer_line.push([]);
-        for(var j = 0; j < data[i].length-1; j++) {
+        for(var j = 0; j < data[i].length; j++) {
         	var pairs = { x : data[i][j].x, y : data[i][j].y };
         	pairs.y += layer_line[layer_line.length - 2][j].y;
             layer_line[layer_line.length - 1].push(pairs);
@@ -184,23 +196,52 @@ function bump_layer(n) {
 
 var n = 20, // number of layers
     m = 200, // number of samples per layer
-    stream_data = [];
-for (var i = 0; i < 20; i++) stream_data.push(i);
-var layer = layer_stack(stream_data.map(function() { return bump_layer(200); }));
-scale(layer);
+    cur_layer = 0; // current layer index
+    stream_data = [],
+    stream_layer = new Array(3);
 
+for (var i = 0; i < n; i++) stream_data.push(i);
+for (var j = 0; j < 3; j++)
+{ // generate three different layers
+    stream_layer[j] = layer_stack(stream_data.map(function() { 
+        return bump_layer(200); 
+    })); // use .map in Object Array
+    scale(stream_layer[j]);
+}
+
+function layer_copy_2d(ori_layer)
+{ // this function only fit 2d-array with layer data
+    var arr = new Array(ori_layer.length);
+    for (var iter = 0; iter < ori_layer.length; iter++) {
+        if (Object.prototype.toString.call(ori_layer[iter]) != Object.prototype.toString.call([])) return;
+        // exit function if any element in arr is not an array
+
+        arr[iter] = new Array();
+        for (subiter = 0; subiter < ori_layer[iter].length; subiter++) {
+            var coord = { x : ori_layer[iter][subiter].x, y : ori_layer[iter][subiter].y};
+            arr[iter].push(coord);
+        }
+    }
+    return arr;
+};
+
+var layer = layer_copy_2d(stream_layer[cur_layer]),
+    newlayer = layer_copy_2d(stream_layer[(cur_layer + 1) % 3]);
 var color_idx = [];
 for (var i = 0; i < layer.length; i++)
 	color_idx.push(i);
 color_idx.shuffle();
 
-window.onload = function() {
+function draw_svg() {
+    document.querySelector("svg").innerHTML = "";
+    // clear original .svg image
+    
     svg = document.getElementById("layout");
     svg.setAttribute("width", cav_width);
     svg.setAttribute("height", cav_height);
     // create svg image and set its attributes
 
-    for(var i = 0; i < layer.length - 1; i++){
+    for(var i = 0; i < layer.length - 1; i++) {
         var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         var str = "M" + layer[i + 1][0].x + "," + layer[i + 1][0].y;
         for(var j = 1; j < layer[i + 1].length; j++)
@@ -221,3 +262,43 @@ window.onload = function() {
         svg.appendChild(path);
     }
 }
+
+function transition() {
+    if (typeof(interval_id) != "undefined")
+        clearInterval(interval_id);
+    // clear the original animation if well-defined
+
+    cur_layer = (cur_layer + 1) % 3;
+    newlayer = layer_copy_2d(stream_layer[(cur_layer + 1) % 3]);
+    interval_id = setInterval(update, 1);
+
+    function update() {
+        var count = 0, equal_judge = new Array(layer.length);
+        for (var i = 0; i < layer.length; i++) 
+        { // equal_judge array is used to determine whether layer-change is completed
+            equal_judge[i] = new Array(layer[0].length);
+            for (var j = 0; j < layer[i].length; j++)
+                equal_judge[i][j] = 0;
+        }
+
+        for (var i = 0; i < layer.length; i++) {
+            for (var j = 0; j < layer[i].length; j++) {
+                if (layer[i][j].y - newlayer[i][j].y < 0.0001 && equal_judge[i][j] == 0) {
+                    count++;
+                    equal_judge[i][j] = 1;
+                }
+                layer[i][j].y = (layer[i][j].y + newlayer[i][j].y) / 2;
+                // this formula is used to make animation
+            }
+        }
+        draw_svg();
+
+        if (count == layer.length * layer[0].length) {
+            layer = layer_copy_2d(stream_layer[(cur_layer + 1) % 3]);
+            count = 0;
+            clearInterval(interval_id);
+        }
+    }
+}
+
+draw_svg();
