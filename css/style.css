@@ -177,11 +177,3 @@ a:visited {
     color: #d1d1d1;
     fill: #d1d1d1;
 }
-
-#canvas-container {
-	border-style: solid;
-	border-width: 1px;
-	border-color: #f1f1f1;
-    border-radius: 0;
-    background: #ffffff;
-}
