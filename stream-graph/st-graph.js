@@ -264,6 +264,9 @@ function draw_svg() {
 }
 
 function transition() {
+    var speed = 0, speed_count = 0, SPEED_CONST = 0.000003;
+    // speed setting in animation
+
     if (typeof(interval_id) != "undefined")
         clearInterval(interval_id);
     // clear the original animation if well-defined
@@ -283,15 +286,19 @@ function transition() {
 
         for (var i = 0; i < layer.length; i++) {
             for (var j = 0; j < layer[i].length; j++) {
-                if (layer[i][j].y - newlayer[i][j].y < 0.0001 && equal_judge[i][j] == 0) {
+                if (layer[i][j].y - newlayer[i][j].y < 0.001 && equal_judge[i][j] == 0) {
                     count++;
                     equal_judge[i][j] = 1;
                 }
-                layer[i][j].y = (layer[i][j].y + newlayer[i][j].y) / 2;
+                layer[i][j].y = layer[i][j].y + speed * (newlayer[i][j].y - layer[i][j].y);
                 // this formula is used to make animation
             }
         }
         draw_svg();
+
+        speed_count++;
+        speed = SPEED_CONST * Math.pow(speed_count, 2);
+        // speed calculating formula
 
         if (count == layer.length * layer[0].length) {
             layer = layer_copy_2d(stream_layer[(cur_layer + 1) % 3]);
