@@ -264,25 +264,38 @@ function draw_svg() {
 }
 
 function transition() {
-    var speed = 0, speed_count = 0, SPEED_CONST = 0.000003;
-    // speed setting in animation
+
+    /* ########################################                            ###################################### */
+    /* ######################################## variables declaration      ###################################### */
+    /* ######################################## speed setting in animation ###################################### */
+    /* ########################################                            ###################################### */
+    /* ##### */ var speed = 0,                              /* the speed of animation                             */
+    /* ##### */     speed_count = 0,                        /* the factor in speed formula                        */
+    /* ##### */     SPEED_CONST = 0.000003,                 /* the speed constant in formula                      */
+    /* ##### */     count = 0,                              /* the number of points which complete layer-change   */
+    /* ##### */     equal_judge = new Array(layer.length),  /* determine whether all points are counted           */
+    /* ##### */     complete_judge = false;                 /* determine whether all layer-changes have been done */
+    
+    for (var i = 0; i < layer.length; i++) 
+    { // equal_judge array is used to determine whether layer-change is completed
+        equal_judge[i] = new Array(layer[0].length);
+        for (var j = 0; j < layer[i].length; j++)
+            equal_judge[i][j] = 0;
+    }
 
     if (typeof(interval_id) != "undefined")
         clearInterval(interval_id);
     // clear the original animation if well-defined
 
+    if (complete_judge == true) layer = layer_copy_2d(stream_layer[cur_layer]);
     cur_layer = (cur_layer + 1) % 3;
     newlayer = layer_copy_2d(stream_layer[cur_layer]);
     interval_id = setInterval(update, 1);
 
     function update() {
-        var count = 0, equal_judge = new Array(layer.length);
-        for (var i = 0; i < layer.length; i++) 
-        { // equal_judge array is used to determine whether layer-change is completed
-            equal_judge[i] = new Array(layer[0].length);
-            for (var j = 0; j < layer[i].length; j++)
-                equal_judge[i][j] = 0;
-        }
+        speed_count++;
+        speed = SPEED_CONST * Math.pow(speed_count, 2);
+        // speed calculating formula
 
         for (var i = 0; i < layer.length; i++) {
             for (var j = 0; j < layer[i].length; j++) {
@@ -296,13 +309,9 @@ function transition() {
         }
         draw_svg();
 
-        speed_count++;
-        speed = SPEED_CONST * Math.pow(speed_count, 2);
-        // speed calculating formula
-
-        if (count == layer.length * layer[0].length) {
-            layer = layer_copy_2d(stream_layer[(cur_layer + 1) % 3]);
-            count = 0;
+        if (count >= layer.length * layer[0].length)
+        { // this expression shows that a layer-change is completed
+            complete_judge = true;
             clearInterval(interval_id);
         }
     }
