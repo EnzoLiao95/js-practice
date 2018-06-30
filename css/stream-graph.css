@@ -1,13 +1,13 @@
 .button {
-  position: relative;
-  float: right;
-  right: 5px;
-  text-align: center;
-  width: 100px;
-  height: 37px;
-  line-height: 37px;
-  background-color: #a1a1a1;
-  color: white;
+    position: relative;
+    float: right;
+    right: 5px;
+    text-align: center;
+    width: 100px;
+    height: 37px;
+    line-height: 37px;
+    background-color: #a1a1a1;
+    color: white;
 }
 
 .button:hover {

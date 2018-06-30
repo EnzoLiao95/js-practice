@@ -1,9 +1,3 @@
-/* #####                                                   ##### */
-/* ##### Attention: This is the basic .css file !          ##### */
-/* ##### Sub-pages' .css files will be updated in the same ##### */
-/* ##### folder if they are needed.                        ##### */
-/* #####                                                   ##### */
-
 body {
     font-family: "Helvetica Neue", Helvetica, sans-serif;
     margin: 0 auto 4em auto;
@@ -177,3 +171,4 @@ a:visited {
     color: #d1d1d1;
     fill: #d1d1d1;
 }
+
